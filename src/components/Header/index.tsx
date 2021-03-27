@@ -1,13 +1,18 @@
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
-
 import { Container, Content } from "./styles";
 
-const Header = () => {
+interface HedaerProps {
+  onOpenNewTransactionNewModal(): void;
+}
+
+const Header = ({ onOpenNewTransactionNewModal }: HedaerProps) => {
   return (
     <Container>
       <Content>
         <Logo />
-        <button type="button">Nova transação</button>
+        <button type="button" onClick={onOpenNewTransactionNewModal}>
+          Nova transação
+        </button>
       </Content>
     </Container>
   );
