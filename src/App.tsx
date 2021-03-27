@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import { GlobalStyles } from "./assets/styles/global";
+import NewTransactionModal from "./components/NewTransactionModal";
 
 createServer({
   routes() {
@@ -25,7 +26,7 @@ createServer({
   },
 });
 
-Modal.setAppElement("root");
+Modal.setAppElement("#root");
 
 export function App() {
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(
@@ -46,14 +47,12 @@ export function App() {
 
       <Header onOpenNewTransactionNewModal={handleOpenNewTransactionModal} />
 
-      <Dashboard />
-
-      <Modal
+      <NewTransactionModal
         isOpen={isNewTransactionModalOpen}
         onRequestClose={handleCloseNewTransactionModal}
-      >
-        <h2>Cadastrar transação</h2>
-      </Modal>
+      />
+
+      <Dashboard />
     </>
   );
 }
