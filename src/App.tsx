@@ -6,6 +6,7 @@ import Dashboard from "./components/Dashboard";
 import Header from "./components/Header";
 import { GlobalStyles } from "./assets/styles/global";
 import NewTransactionModal from "./components/NewTransactionModal";
+import { TransactionsProvider } from "./TransactionsContext";
 
 createServer({
   models: {
@@ -64,7 +65,7 @@ export function App() {
   };
 
   return (
-    <>
+    <TransactionsProvider>
       <GlobalStyles />
 
       <Header onOpenNewTransactionNewModal={handleOpenNewTransactionModal} />
@@ -75,6 +76,6 @@ export function App() {
       />
 
       <Dashboard />
-    </>
+    </TransactionsProvider>
   );
 }
