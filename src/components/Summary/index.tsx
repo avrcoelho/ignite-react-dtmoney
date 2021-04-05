@@ -1,6 +1,4 @@
-import { useContext } from "react";
-
-import { TransactionsContext } from "../../TransactionsContext";
+import { useTransactions } from "../../hooks/useTransactions";
 
 import { ReactComponent as IncomeIcon } from "../../assets/svgs/income.svg";
 import { ReactComponent as OutcomeIcon } from "../../assets/svgs/outcome.svg";
@@ -8,7 +6,22 @@ import { ReactComponent as TotalIcon } from "../../assets/svgs/total.svg";
 import { Container } from "./styles";
 
 const Summary = () => {
-  const transactions = useContext(TransactionsContext);
+  const { transactions } = useTransactions();
+
+  const { deposits, total, withDraws } = transactions.reduce(
+    (acc, transaction) => {
+      if (transaction.type === "deposit") {
+        acc.deposits += transaction.amount;
+        acc.total += transaction.amount;
+      } else {
+        acc.withDraws += transaction.amount;
+        acc.total -= transaction.amount;
+      }
+
+      return acc;
+    },
+    { deposits: 0, withDraws: 0, total: 0 }
+  );
 
   return (
     <Container>
@@ -18,7 +31,12 @@ const Summary = () => {
           <IncomeIcon />
         </header>
         <main>
-          <strong>R$ 1000</strong>
+          <strong>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(deposits)}
+          </strong>
         </main>
       </div>
       <div>
@@ -27,7 +45,13 @@ const Summary = () => {
           <OutcomeIcon />
         </header>
         <main>
-          <strong>- R$ 100</strong>
+          <strong>
+            -{" "}
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(withDraws)}
+          </strong>
         </main>
       </div>
       <div className="highlight-background">
@@ -36,7 +60,12 @@ const Summary = () => {
           <TotalIcon />
         </header>
         <main>
-          <strong>- R$ 900</strong>
+          <strong>
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(total)}
+          </strong>
         </main>
       </div>
     </Container>
